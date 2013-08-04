@@ -1,0 +1,141 @@
+.jumbotron {
+	margin: 60px 0;
+	text-align: center;	
+}
+
+.cake-debug-output {
+	margin-top: 70px;
+	
+}
+
+#main_container {
+	
+	margin-top: 70px;
+	
+}
+
+
+#EventContent {
+	
+	width: 100%;
+	
+}
+
+.EventPathRoll {
+	
+	width: 60px;
+}
+
+.EventPathRollTarget{
+	
+	width: 30px;
+	
+}
+
+.evtAcordContain td {
+	border-top: none;
+	border-bottom: 1px solid #DDD;
+	
+}
+
+.btnEditStory{
+margin-left: 5px;	
+	
+}
+
+#headerTagline{
+	color: #e78b24;
+	font-size: 14px;
+	font-style: italic;
+	position: relative;
+	top: 3px;
+}
+
+#storyContainer {
+	
+	display: none;
+}
+
+.reqBottom td{
+	border: none; 
+	
+}
+
+.notPrimary {
+	opacity: .2
+	
+}
+
+.notPrimary:hover {
+	opacity: 1
+	
+}
+
+#cviewEventTitle{
+	width: 160px;
+	
+}
+
+.hiddenBtn{
+	display: none;
+	
+}
+
+#cviewEventBtns{
+	width: 97px;
+	
+}
+
+.cviewAddEventPath{
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+
+.inlineHeader{
+	display: inline;
+}
+
+#chapterViewModal{
+	left: 30%; 
+	width: 1000px;
+	
+}
+
+#pathSelectData{
+	display: none;
+	
+}
+
+.pathKeyOpts {
+	float: left;
+	display: inline;
+
+}
+
+#RequirementKeySelect {
+	display: none;
+	
+}
+
+#btnAddRequirement{
+position: relative;
+top: 38px;
+	
+	
+}
+
+.reqId {
+	
+	width: 20px;
+}
+
+.reqType {
+	
+	width: 70px;
+	
+}
+
+.btnRemoveReq{
+	float: right;
+	
+}
