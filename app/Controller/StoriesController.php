@@ -11,7 +11,7 @@ class StoriesController extends AppController {
 
 	public function beforeFilter(){
 		
-		$this->Auth->allow('home','play');
+		$this->Auth->allow('home');
 		
 	}
 
