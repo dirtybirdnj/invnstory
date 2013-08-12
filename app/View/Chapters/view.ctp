@@ -93,7 +93,6 @@ $this->Html->script('chapter_view',array('inline' => false));
 	</table>
 	<?php endif; ?>
 
-
 	<div style="display: none;">
 	
 		<div id="createEventForm">

@@ -1,12 +1,12 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Item Model
+ * Action Model
  *
- * @property Story $Story
- * @property User $User
+ * @property RequirementType $RequirementType
+ * @property Step $Step
  */
-class Item extends AppModel {
+class Action extends AppModel {
 
 /**
  * Validation rules
@@ -14,7 +14,7 @@ class Item extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'story_id' => array(
+		'requirement_type_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
@@ -24,17 +24,7 @@ class Item extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'title' => array(
-			'notempty' => array(
-				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'cost' => array(
+		'value' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
@@ -44,7 +34,7 @@ class Item extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'weight' => array(
+		'add' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
@@ -54,9 +44,9 @@ class Item extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'description' => array(
-			'notempty' => array(
-				'rule' => array('notempty'),
+		'remove' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -74,31 +64,12 @@ class Item extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Story' => array(
-			'className' => 'Story',
-			'foreignKey' => 'story_id',
+		'RequirementType' => array(
+			'className' => 'RequirementType',
+			'foreignKey' => 'requirement_type_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		)
-	);
-
-
-	public $hasAndBelongsToMany = array(
-		'Character' => array(
-			'className' => 'Character',
-			'joinTable' => 'characters_items',
-			'foreignKey' => 'item_id',
-			'associationForeignKey' => 'character_id',
-			'unique' => 'keepExisting',
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
 		)
 	);
 

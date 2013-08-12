@@ -3,22 +3,13 @@ App::uses('AppController', 'Controller');
 
 class EventsController extends AppController {
 	
-	public $uses = array('Event','Path','Roll');
+	public $uses = array('Event','Path','Roll','Item','Chapter','Action');
 	
 	public function get_primary($story_id){
 		
 		$this->autoRender = false;
 		$conditions = array('conditions' => array('story_id' => $story_id,'primary' => 1));
-		//$this->Event->recursive = 0;
-		
-		//$this->Event->unbindModel(array('belongsTo' => array('Chapter')));
-		
-		
-		
 		$event = $this->Event->find('first',$conditions);
-		
-		
-		debug($event);
 		
 		$path_ids = array();
 		
@@ -28,13 +19,10 @@ class EventsController extends AppController {
 			
 		}
 		
-		debug($path_ids);
 		$this->Path->recursive = 2;
 		$this->Path->unbindModel(array('belongsTo' => array('Chapter','Story')));
 		$this->Path->unbindModel(array('hasMany' => array('EventPaths')));		
 		$paths = $this->Path->findAllById($path_ids);
-		
-		debug($paths);
 		
 		
 	}
@@ -88,6 +76,14 @@ class EventsController extends AppController {
 		$this->request->data = $this->Event->find('first', $options);
 
 		$chapter_id = $this->request->data['Event']['chapter_id'];
+
+		$this->Chapter->recursive = 0;
+		$this->Chapter->unbindModel(array('belongsTo' => array('Story')));
+
+		$chapter = $this->Chapter->read(null,$chapter_id);
+		
+		$story_id = $chapter['Chapter']['story_id'];
+		
 		
 		$this->Event->recursive = 0;
 		$this->Event->unbindModel(array('belongsTo' => array('Chapter')));
@@ -98,7 +94,18 @@ class EventsController extends AppController {
 
 		$rolls = $this->Roll->find('all');
 		
-		$this->set(compact('paths','events','rolls','id'));		
+		$actions = array('add','remove');
+		$action_types = array(1 => 'gold', 2 => 'karma', 5 => 'item');
+		
+		$this->Item->unbindModel(array('belongsTo' => array('Story')));
+		$this->Item->unbindModel(array('hasAndBelongsToMany' => array('Character')));		
+		$story_items = $this->Item->findAllByStoryId($story_id);
+		
+		//$this->Action->unbindModel
+		$event_actions = $this->Action->findAllByEventId($id);
+		
+		
+		$this->set(compact('paths','events','rolls','id','action_types','story_items','event_actions'));		
 		
 	}
 	

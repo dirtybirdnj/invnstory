@@ -2,6 +2,8 @@ $(document).ready(function(){
 	
 	var root = location.protocol + '//' + location.host + '/invenstory';
 	
+
+	
 	$('.editEvent').click(function(event){
 
 		event.preventDefault();	
@@ -11,12 +13,135 @@ $(document).ready(function(){
 		$.post(event_url,function(data){
 
 			$('#modal-body').html(data);
+			
+			$('#EventEditForm').on('click','.btnRemoveAction',function(event){
+				
+				//alert('boop');
+				
+				var remove_action_url = root + '/actions/remove/';
+				
+				$.post(remove_action_url,{
+	
+						action_id : $(event.target).attr('action_id'),
+						field : $(event.target).attr('field')
+				}, function(){	
+				
+					$(event.target).parent().fadeOut();
+					$(event.target).parent().parent().append('<input type="button" class="btnSuccessAction btn btn-mini btn-block btn-success" value="Add Success Action">');
+					
+				}); // end post
+				
+				
+			}); // end btnRemoveAction delegator
+			
+			
+			$('#EventEditForm').on('click','.btnSuccessAction',function(event){
+	
+				$(event.target).fadeOut(function(){
+					
+					$(event.target).parent().append($('#actionTemplate').html());
+					//$('#actionTemplate').html();
+					
+					$('.actionType').change(function(event){
+						
+						//alert(this.value);
+						var input = $(event.target).parent().parent().parent().find('.actionValue');
+						var select = $(event.target).parent().parent().parent().find('.actionAddItem');			
+	
+						//Conditionally toggle display of select or input
+						
+						if(this.value != "5"){				
+							if($(input).css('display') == 'none'){ $(select).fadeOut(function(){ $(input).val('').fadeIn(); }); }
+						} else {
+							if($(select).css('display') == 'none'){ 
+								$(input).fadeOut(function(){ 
+									$(select).fadeIn(); 
+									$(input).val($(select).val());
+								}); 
+							}
+						} //  end if value == 2 || display select list
+										
+					});				
+					
+					$('.actionAddItem').change(function(){
+						
+						var input = $(event.target).parent().parent().parent().find('.actionValue');
+						$(input).val(this.value);
+						
+						alert($(input).val());
+
+					}); // end change handler
+	
+				
+					$('.actionAddSubmit').click(function(event){
+						
+						var container = $(event.target).closest('.pathActionInputs');
+						
+						var actionAddRemove = $(container).find('.actionAddRemove').val();
+						var actionType = $(container).find('.actionType').val();
+						var actionValue = $(container).find('.actionValue').val();
+						
+						var actionEventID = $('#eventID').val();
+						var pathID = $(event.target).closest('.pathActionRow').attr('path_id');
+						var chapterID = $('#chapterID').val();	
+						var actionSuccessFail = 'success';
+						
+						//var actionAddRemoveLabel = 'Remove';
+						//if(actionAddRemove == "1") actionAddRemoveLabel = 'Add';
+
+						var actionAddRemoveLabel = $(container).find('.actionAddRemove option:selected').text();
+
+						var actionTypeLabel = $(container).find('.actionType option:selected').text();															   					var actionItemText = $(container).find('.actionAddItem option:selected').text();				
+						
+						var addActionURL = root + '/actions/add';
+
+						var actionAddRemoveLabelClass = 'important';
+						if(actionAddRemove == "1") actionAddRemoveLabelClass = 'success';
+						
+						$.post(addActionURL,{
+							addRemove: actionAddRemove,
+							type: actionType, 
+							value: actionValue,
+							event_id: actionEventID,
+							path_id: pathID,
+							chapter_id: chapterID,
+							success_fail: actionSuccessFail
+							},
+						function(data){
+
+							var actionHtml = '<p class="well well-small">';
+							actionHtml += '<span class="label label-' + actionAddRemoveLabelClass + '">' + actionAddRemoveLabel + '</span>&nbsp;';
+							
+							if(actionType == "5"){ actionHtml += actionItemText; }
+							else { actionHtml += actionValue + '&nbsp;' + actionTypeLabel; }
+							
+							actionHtml += '<input action_id="' + data.id + '" type="button" field="' + actionSuccessFail + '" value="Remove" ';
+							actionHtml += 'class="btnRemoveAction btn btn-mini btn-danger pull-right">';
+							actionHtml += '</p>';
+								
+							$(container).empty().html(actionHtml);
+							
+						},"json"); // end post
+						
+					});	// end click handler						
+					
+				}); // end fadeout
+
+				
+			}); // end btnSuccessAction
+			
+			$('.btnFailAction').click(function(event){
+			
+				$(event.target).fadeOut();
+				$(event.target).parent().append($('#actionTemplate').html());			
+				
+				
+			});			
+						
 			$('#chapterViewModal').modal();
 			
-			//$('#chapterViewModal').width($(window).width() - 20);
-
 			
-		});
+		}); // end post
 	
 	}); // end edit click event
 	
@@ -93,8 +218,8 @@ $(document).ready(function(){
 		
 
 		
-			});			
-
+			}); // end add requirement
+			
 			
 		}); // end post
 		
