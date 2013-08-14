@@ -1,7 +1,6 @@
-$(document).ready(function(){
+	$(document).ready(function(){
 	
 	var root = location.protocol + '//' + location.host + '/invenstory';
-	
 
 	
 	$('.editEvent').click(function(event){
@@ -17,17 +16,32 @@ $(document).ready(function(){
 			$('#EventEditForm').on('click','.btnRemoveAction',function(event){
 				
 				//alert('boop');
+				var container = $(event.target).closest('.pathActionInputs');
+				var field = $(container).attr('field');
 				
 				var remove_action_url = root + '/actions/remove/';
 				
 				$.post(remove_action_url,{
 	
 						action_id : $(event.target).attr('action_id'),
-						field : $(event.target).attr('field')
+						field : field
+						
 				}, function(){	
 				
+					if(field == 'success'){
+						
+						btnClass = 'success';
+						label = 'Success';
+						
+					} else {
+						
+						btnClass = 'danger';
+						label = 'Fail'
+						
+					}
+				
 					$(event.target).parent().fadeOut();
-					$(event.target).parent().parent().append('<input type="button" class="btnSuccessAction btn btn-mini btn-block btn-success" value="Add Success Action">');
+					$(event.target).parent().parent().append('<input type="button" class="btnSuccessAction btn btn-mini btn-block btn-' + btnClass + '" value="Add ' + label + ' Action">');
 					
 				}); // end post
 				
@@ -35,7 +49,7 @@ $(document).ready(function(){
 			}); // end btnRemoveAction delegator
 			
 			
-			$('#EventEditForm').on('click','.btnSuccessAction',function(event){
+			$('#EventEditForm').on('click','.btnSuccessAction,.btnFailAction',function(event){
 	
 				$(event.target).fadeOut(function(){
 					
@@ -84,7 +98,7 @@ $(document).ready(function(){
 						var actionEventID = $('#eventID').val();
 						var pathID = $(event.target).closest('.pathActionRow').attr('path_id');
 						var chapterID = $('#chapterID').val();	
-						var actionSuccessFail = 'success';
+						var actionSuccessFail = $(container).attr('field');
 						
 						//var actionAddRemoveLabel = 'Remove';
 						//if(actionAddRemove == "1") actionAddRemoveLabel = 'Add';
@@ -130,6 +144,8 @@ $(document).ready(function(){
 				
 			}); // end btnSuccessAction
 			
+			/*
+			
 			$('.btnFailAction').click(function(event){
 			
 				$(event.target).fadeOut();
@@ -137,6 +153,8 @@ $(document).ready(function(){
 				
 				
 			});			
+			
+			*/
 						
 			$('#chapterViewModal').modal();
 			

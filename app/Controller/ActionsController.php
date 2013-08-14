@@ -12,8 +12,6 @@ class ActionsController extends AppController {
 		
 		$this->autoRender = false;
 		
-		//debug($this->request->data);	
-		
 
 		$event_id = $this->request->data['event_id'];
 		$chapter_id = $this->request->data['chapter_id'];
@@ -42,6 +40,7 @@ class ActionsController extends AppController {
 		$this->Action->query($SQL);
 		
 		$return['id'] = $action_id;
+		$return['sql'] = $SQL;
 		
 		header('Content-Type: application/json');
 		echo json_encode($return);
@@ -58,7 +57,6 @@ class ActionsController extends AppController {
 		$field = $this->request->data['field'];
 		
 		$this->Action->delete($id,false);
-		
 		$this->Action->query("UPDATE event_paths SET " . $field . "_action = NULL WHERE " . $field . "_action = $id");
 		
 	}

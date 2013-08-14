@@ -104,13 +104,11 @@
 		echo '<tr class="pathActionRow" path_id="' . $key . '">';
 		
 			echo '<td colspan="3">Path Actions:</td>';
-			echo '<td colspan="2" class="pathActionInputs">';
+			echo '<td colspan="2" class="pathActionInputs" field="success">';
 
 			$action_exists = false;
 			
 			foreach($this->request->data['EventPaths'] as $evtpath){ 
-
-
 
 				if($key == $evtpath['path_id'] && $evtpath['success_action'] != NULL){ 
 								
@@ -126,10 +124,10 @@
 
 							if($evtact['RequirementType']['id'] == '5'){
 										
-								foreach($story_items as $item){
-									
-									if($item['Item']['id'] == $evtact['Action']['value']){ echo '&nbsp' . $item['Item']['title']; }
-									
+								foreach($story_items as $item){ 
+								
+									if($item['Item']['id'] == $evtact['Action']['value']){ echo '&nbsp' . $item['Item']['title']; } 
+								
 								}		
 											
 							
@@ -140,7 +138,7 @@
 
 							}
 
-							echo '<input action_id="' . $evtact['Action']['id'] . '" field="success" type="button" value="Remove" class="btnRemoveAction btn btn-mini btn-danger pull-right"/>';
+							echo '<input action_id="' . $evtact['Action']['id'] . '" type="button" value="Remove" class="btnRemoveAction btn btn-mini btn-danger pull-right"/>';
 
 							echo '</p>';
 							
@@ -152,31 +150,78 @@
 					$action_exists = true;
 					break;
 					
-					debug($evtpath);
-					debug($evtact);
-					
-				} else {
-					
-					//echo '<p>nope</p>';
-					
-				}
+				} 
 				
 				
-			}
+			} // end foreach event paths
 			
-			//debug($action_exists);
-			
-			if(!$action_exists){
-			
-				echo '<input type="button" class="btnSuccessAction btn btn-mini btn-block btn-success" value="Add Success Action"/>';
-			
-			}
+			if(!$action_exists){ echo '<input type="button" class="btnSuccessAction btn btn-mini btn-block btn-success" value="Add Success Action"/>'; }
 			
 			
 			echo '</td>';
 			
 			
-			echo '<td colspan="2" class="pathActionInputs"><input type="button" class="btnFailAction btn btn-mini btn-block btn-danger" value="Add Fail Action"/></td>';			
+			echo '<td colspan="2" class="pathActionInputs" field="fail">';
+			
+			$action_exists = false;
+			
+			foreach($this->request->data['EventPaths'] as $evtpath){ 
+
+				if($key == $evtpath['path_id'] && $evtpath['fail_action'] != NULL){ 
+								
+					foreach($event_actions as $evtact){
+						
+						if($evtpath['fail_action'] == $evtact['Action']['id']){
+							
+							echo '<p class="well well-small">';
+							
+							if($evtact['Action']['add'] == '1'){ echo '<span class="label label-success">Add</span>'; }
+							else { echo '<span class="label label-important">Remove</span>'; }
+							
+
+							if($evtact['RequirementType']['id'] == '5'){
+										
+								foreach($story_items as $item){ 
+								
+									if($item['Item']['id'] == $evtact['Action']['value']){ echo '&nbsp' . $item['Item']['title']; } 
+								
+								}		
+											
+							
+							} else {
+								
+								echo '&nbsp;' . $evtact['Action']['value'];
+								echo '&nbsp;' . $evtact['RequirementType']['title'];
+
+							}
+
+							echo '<input action_id="' . $evtact['Action']['id'] . '" type="button" value="Remove" class="btnRemoveAction btn btn-mini btn-danger pull-right"/>';
+
+							echo '</p>';
+							
+						}
+						
+						
+					}
+					
+					$action_exists = true;
+					break;
+					
+				} 
+				
+				
+			} // end foreach event paths
+			
+			if(!$action_exists){ echo '<input type="button" class="btnFailAction btn btn-mini btn-block btn-danger" value="Add Fail Action"/>'; }			
+			
+			
+			
+			
+			
+			
+			
+			echo '</td>';			
+			
 		echo '</tr>';
 		
 	$i = $i + 1;
