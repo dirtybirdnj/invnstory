@@ -38,11 +38,13 @@ class Chapter extends AppModel {
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
-/**
- * belongsTo associations
- *
- * @var array
- */
+	public function getPrimaryEvent($chapter_id){
+		
+		
+		
+	}
+
+
 	public $belongsTo = array(
 		'Story' => array(
 			'className' => 'Story',
@@ -53,11 +55,6 @@ class Chapter extends AppModel {
 		)
 	);
 
-/**
- * hasMany associations
- *
- * @var array
- */
 	public $hasMany = array(
 		'Event' => array(
 			'className' => 'Event',

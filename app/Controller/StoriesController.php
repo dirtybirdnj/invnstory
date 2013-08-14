@@ -39,6 +39,10 @@ class StoriesController extends AppController {
 	
 	public function play($id){
 		
+		if (!$this->Story->exists($id)) {
+			throw new NotFoundException(__('Invalid story'));
+		}		
+		
 		$this->Story->recursive = 0;
 		$story = $this->Story->read(null,$id);
 
@@ -53,11 +57,16 @@ class StoriesController extends AppController {
 		
 	}
 
-/**
- * add method
- *
- * @return void
- */
+	public function init($id){
+		
+		$this->autoRender = false;
+		
+		$story = $this->Story->read(null,$id);
+		
+		debug($story);
+		
+	}
+
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->Story->create();
@@ -72,13 +81,6 @@ class StoriesController extends AppController {
 		$this->set(compact('users'));
 	}
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
 	public function edit($id = null) {
 		if (!$this->Story->exists($id)) {
 			throw new NotFoundException(__('Invalid story'));
@@ -98,13 +100,6 @@ class StoriesController extends AppController {
 		$this->set(compact('users'));
 	}
 
-/**
- * delete method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
 	public function delete($id = null) {
 		$this->Story->id = $id;
 		if (!$this->Story->exists()) {

@@ -20,7 +20,20 @@ $(document).ready(function(){
 			
 			  if(data.status == 'ok'){
 				  
-				  $('#newCharForm,#selectPrevChar').fadeOut(function(){ $('#storyContainer').fadeIn(); });
+				  //Get Initial Chapter / Primary Event
+				  
+				  var initial_event_url = root + '/invenstory/stories/init/' + story_id;
+				  
+				  $.post(initial_event_url,function(data){
+
+					  $('#storyContainer').html(data);
+					  $('#newCharForm,#selectPrevChar').fadeOut(function(){ $('#storyContainer').fadeIn(); });
+					  
+					  
+				  });
+				  
+				  
+
 				  
 				  
 				  

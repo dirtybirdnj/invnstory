@@ -3,9 +3,10 @@ App::uses('AppModel', 'Model');
 /**
  * User Model
  *
+ * @property Character $Character
+ * @property Log $Log
  * @property Stat $Stat
  * @property Story $Story
- * @property Item $Item
  */
 class User extends AppModel {
 
@@ -35,9 +36,29 @@ class User extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+		'name' => array(
+			'notempty' => array(
+				'rule' => array('notempty'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
 		'admin' => array(
 			'boolean' => array(
 				'rule' => array('boolean'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'credits' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -55,6 +76,32 @@ class User extends AppModel {
  * @var array
  */
 	public $hasMany = array(
+		'Character' => array(
+			'className' => 'Character',
+			'foreignKey' => 'user_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'Log' => array(
+			'className' => 'Log',
+			'foreignKey' => 'user_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 		'Stat' => array(
 			'className' => 'Stat',
 			'foreignKey' => 'user_id',
@@ -82,37 +129,5 @@ class User extends AppModel {
 			'counterQuery' => ''
 		)
 	);
-
-
-/**
- * hasAndBelongsToMany associations
- *
- * @var array
- */
-	public $hasAndBelongsToMany = array(
-		'Item' => array(
-			'className' => 'Item',
-			'joinTable' => 'items_users',
-			'foreignKey' => 'user_id',
-			'associationForeignKey' => 'item_id',
-			'unique' => 'keepExisting',
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
-		)
-	);
-
-
-    public function beforeSave($options = array()) {
-        if (isset($this->data['User']['password'])) {
-            $this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
-        }
-        return true;
-    }
 
 }

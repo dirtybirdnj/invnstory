@@ -25,7 +25,9 @@ class CharactersController extends AppController {
 		$this->autoRender = false;
 		
 		if ($this->request->is('post')) {
-		
+			
+			$this->request->data['user_id'] = $this->Session->read('Auth.User.id');			
+					
 			if ($this->Character->save($this->request->data)) {
 				$response['status'] = 'ok';
 				$response['message'] = 'The character has been saved';

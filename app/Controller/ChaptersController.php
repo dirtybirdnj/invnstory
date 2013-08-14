@@ -17,7 +17,6 @@ class ChaptersController extends AppController {
 			throw new NotFoundException(__('Invalid chapter'));
 		}
 		
-		
 		$conditions =  array('Event.chapter_id' => $chapter_id);
 		$data = array('Event.primary' => 0);
 		$result = $this->Event->updateAll($data,$conditions);
