@@ -20,7 +20,7 @@
 ?>
 
 <h3>Requirements</h3>
-	<table class="table">
+	<table class="table" id="reqTable">
 	<tr>
 		<th class="reqId">ID</th>
 		<th class="reqType">Type</th>
@@ -36,7 +36,7 @@
 	echo '<tr>';
 
 	echo '<td>' . $req['id'] . '</td><td>' . $requirement_types[$req['requirement_type_id']] . '</td><td>';
-	echo '<input type="button" value="Remove" class="btnRemoveReq btn btn-mini btn-danger"/>' . $req['foreign_key'];
+	echo '<input requirement_id="' . $req['id'] . '" type="button" value="Remove" class="btnRemoveReq btn btn-mini btn-danger"/>';
 	
 		if($req['requirement_type_id'] == 4){
 		
@@ -67,6 +67,8 @@
 			
 			
 		}
+		
+		if($req['requirement_type_id'] != 4 && $req['requirement_type_id'] != 5) echo $req['foreign_key'];
 
 	echo '</td></tr>';
 	

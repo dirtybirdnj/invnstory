@@ -82,7 +82,7 @@
 						var input = $(event.target).parent().parent().parent().find('.actionValue');
 						$(input).val(this.value);
 						
-						alert($(input).val());
+						//alert($(input).val());
 
 					}); // end change handler
 	
@@ -105,7 +105,7 @@
 
 						var actionAddRemoveLabel = $(container).find('.actionAddRemove option:selected').text();
 
-						var actionTypeLabel = $(container).find('.actionType option:selected').text();															   					var actionItemText = $(container).find('.actionAddItem option:selected').text();				
+						var actionTypeLabel = $(container).find('.actionType option:selected').text();															var actionItemText = $(container).find('.actionAddItem option:selected').text();				
 						
 						var addActionURL = root + '/actions/add';
 
@@ -187,6 +187,8 @@
 						
 						$('#RequirementKeySelect').html($('#pathPaths').html());
 						$('#RequirementKeySelect').fadeIn();
+						$('#RequirementKeyVal').val($('#RequirementKeySelect').val());
+						
 						
 					});
 					
@@ -199,6 +201,7 @@
 						
 						$('#RequirementKeySelect').html($('#pathItems').html());
 						$('#RequirementKeySelect').fadeIn();
+						$('#RequirementKeyVal').val($('#RequirementKeySelect').val());						
 						
 					});					
 					
@@ -209,7 +212,7 @@
 					$('#RequirementKeySelect').fadeOut(function(){
 						
 						//$('#RequirementKeySelect').html($('#pathItems').html());
-						$('#RequirementKeyVal').fadeIn();
+						$('#RequirementKeyVal').val('').fadeIn();
 						
 					});					
 					
@@ -218,23 +221,66 @@
 			
 			}); // end requirement.change
 			
+			$('#reqTable').on('click','.btnRemoveReq',function(event){
+				
+				var req_id = $(event.target).attr('requirement_id');
+				
+				var del_req_url = root + '/requirements/delete/' + req_id;
+				$.post(del_req_url,function(data){
+					
+					if(data.status == 'ok'){
+						
+						$(event.target).parent().parent().remove();
+						
+					}
+					
+				},"json");
+				
+			});
 			
-			$('#btnAddRequirement').click(function(){
+			//Event when the item/event select is changed
+			$('#RequirementKeySelect').change(function(event){
+								
+				//alert($(event.target).val());				
+				$('#RequirementKeyVal').val($(event.target).val());
+				alert($('#RequirementKeyVal').val());
+			});
+			
+			
+			$('#btnAddRequirement').click(function(event){
 		
-		
-				if($('#RequirementKeySelect').val() == ''){
-					
-					//handle raw value
-					alert($('#RequirementKeyVal').val());					
-					
-				} else {
-					
-					//handle foreign key
-					alert($('#RequirementKeySelect').val());
-					
-				}
-		
+				var add_req_url = root + '/requirements/add';
 
+				//var container = $(event.target).closest('.row-fluid');
+				var path_id = $('#RequirementPathId').val();
+				var reqType = $('#RequirementRequirementTypeId').val();
+				var reqVal = $('#RequirementKeyVal').val();
+				var reqLabelText = $('#RequirementRequirementTypeId option:selected').text();
+				var keyLabelText = $('#RequirementKeySelect option:selected').text(); 
+				
+
+				$.post(add_req_url,{path_id: path_id,requirement_type_id: reqType,foreign_key: reqVal},function(data){
+					
+					var removeBtn = '<input requirement_id="' + data.id + '" type="button" value="Remove" class="btnRemoveReq btn btn-mini btn-danger">';
+
+					if(reqType == '4' || reqType == '5'){
+						
+						//handle raw value
+						var rowdata = '<td>' + data.id + '</td><td>' + reqLabelText + '</td><td>' + removeBtn + keyLabelText + '</td>';
+						
+					} else {
+						
+						//handle foreign key
+						var rowdata = '<td>' + data.id + '</td><td>' + reqLabelText + '</td><td>' + removeBtn +  reqVal + '</td>';
+						
+					}
+					
+					
+					var rowHtml = '<tr>' + rowdata + '</tr>';
+					
+					$('#reqTable').append(rowHtml);
+					
+				},"json"); // end add req post
 		
 			}); // end add requirement
 			
@@ -264,7 +310,7 @@
  	
 	$('#submitModalForm').click(function(event){
 		
-		alert($('#modal-body').find('form').parent().html());
+		//alert($('#modal-body').find('form').parent().html());
 				
 		$('#modal-body').find('.hiddenBtn').click(); 
 
