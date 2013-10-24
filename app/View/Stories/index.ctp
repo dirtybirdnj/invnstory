@@ -15,7 +15,7 @@
 	</div>
 	
 	<div class="stories index span10">
-		<h2><?php echo __('Stories'); ?></h2>
+		<h2><?php echo __('Storiez'); ?></h2>
 		<table class="table table-striped">
 		<tr>
 					<th><?php echo $this->Paginator->sort('id'); ?></th>
